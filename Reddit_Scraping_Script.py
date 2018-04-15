@@ -223,7 +223,7 @@ print('Updating Records in Database')
 old_count = collection.count()
 
 for post in data:
-    collection.update_one({'post title': post['post title']},{'$set': post}, upsert=True)
+    collection.update_one({'link': post['link']},{'$set': post}, upsert=True)
     
 new_count = collection.count()
 
