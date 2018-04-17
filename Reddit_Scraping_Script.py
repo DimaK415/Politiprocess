@@ -81,6 +81,7 @@ def subreddit_title_scraper(df = True):
     
     article_count = 0
     invalid_links = 0
+    failed_links = 0
     
     for sub in red_sub_list + blu_sub_list:
         submissions = (x for x in api.subreddit(sub).hot(limit=sub_limit) if not x.stickied)
@@ -116,10 +117,9 @@ def subreddit_title_scraper(df = True):
             article = Article(post.url)                           ## Instantiate newspaper3k library ##
             if article.is_valid_url():                            ## Is post a URL?  ##
                 
-                article.download()
-                article.parse()
-                
-                if article.is_valid_body():                       ## Is post an article?  ##
+                try:                                                         ## Try to download and parse article ##
+                    article.download()
+                    article.parse()
                     
                     article_count += 1
                     posts_dict["is article"].append(True)
@@ -141,17 +141,18 @@ def subreddit_title_scraper(df = True):
                     
                     if article_count % 5 == 0:
                         print(f"Added {article_count} articles")
-                
-                else:
-                                                    
-                    invalid_links += 1
+
+                except:                               
+                    failed_links += 1
                     posts_dict["is article"].append(False)
                     posts_dict["article title"].append(np.nan)
                     posts_dict["author"].append(np.nan)
                     posts_dict["text"].append(np.nan)
                     
                     if invalid_links % 5 == 0:
-                        print(f"{invalid_links} none-articles added")
+                        print(f"{failed_links} links failed parse")
+                    
+                    pass
             
                         
             else:
@@ -167,7 +168,7 @@ def subreddit_title_scraper(df = True):
                     
     if df:
         
-        print(f"creating data frame from {article_count + invalid_links} links")
+        print(f"creating data frame from {article_count + invalid_links } links. {failed_links} failed to download")
         
         posts_df = pd.DataFrame(posts_dict)                             ## Make it a dataframe ##
         posts_df =posts_df[["subreddit",
@@ -231,3 +232,8 @@ added_count = new_count - old_count
 
 print(f'Added {added_count} Entries to Database')
 print('All Processes Completed Succesfully')
+
+## Garbage Collection ##
+
+data = []
+df = []
