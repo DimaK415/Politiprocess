@@ -1,21 +1,46 @@
-## Query ##
+# Note # 
+Use 1 for True and 0 for False
 
-Time Frame in Hours    = 48
-Red or Blue            = None
-Number of Topics       = 10
-Model                  = nmf
+## Query ## 
+
+Time Frame in Hours    = 24
+Red, Blue or All       = Red
 
 ## PreProcessing ##
 
-Fix Unicode            = True
-All Lowercase          = False
-Remove Newline         = True
-Remove Punctuation     = False
-Remove Contradictions  = False
-Remove Emails          = True
-Remove Accents         = True
-Replace Currency       = True
+Fix Unicode            = 1
+All Lowercase          = 0
+Remove Newline         = 1
+Remove Punctuation     = 0
+Remove Contradictions  = 0
+Remove Emails          = 1
+Remove Accents         = 1
+Replace Currency       = 1
+
+## Spacy Params ##
+
+Spacy Model            = en_core_web_md
+Min Word Length        = 2
+Use Cleaned Text       = 1
+Named Entity List      = PERSON GPE ORG NORP
+Split Columns          = 0
+
+## TF-IDF Params ##
+Use IDF                = 1 
+Normalize              = 0 
+Sublinear TF           = 1
+Smooth IDF             = 0
+Vocabulary             = None
+Min DF                 = 0
+Max DF                 = 0.6
+Min IC                 = 0.0
+Max Terms              = 0
+Column to Vectorize    = chunks_ents
+
+## Decomposition Params ##
+Number of Topics       = 10
+Model                  = nmf
 
 ## Stop Words ##
 
-Added Stop Words = device medium caption medium caption playback unsupported said week him you You what she them They they who News4jax News4Jax 
+Added Stop Words = device medium caption medium caption playback unsupported said week him you You what she them They they who News4jax News4Jax
