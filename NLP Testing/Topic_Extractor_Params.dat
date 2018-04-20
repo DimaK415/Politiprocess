@@ -1,0 +1,21 @@
+## Query ##
+
+Time Frame in Hours    = 48
+Red or Blue            = None
+Number of Topics       = 10
+Model                  = nmf
+
+## PreProcessing ##
+
+Fix Unicode            = True
+All Lowercase          = False
+Remove Newline         = True
+Remove Punctuation     = False
+Remove Contradictions  = False
+Remove Emails          = True
+Remove Accents         = True
+Replace Currency       = True
+
+## Stop Words ##
+
+Added Stop Words = device medium caption medium caption playback unsupported said week him you You what she them They they who News4jax News4Jax 
