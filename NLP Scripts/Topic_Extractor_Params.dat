@@ -4,7 +4,7 @@ Use 1 for True and 0 for False
 ## Query ## 
 
 Time Frame in Hours    = 24
-Red, Blue or All       = Red
+Red, Blue or All       = Blue
 
 ## PreProcessing ##
 
@@ -38,5 +38,13 @@ Max Terms              = 0
 Column to Vectorize    = chunks_ents
 
 ## Decomposition Params ##
-Number of Topics       = 10
-Model                  = nmf
+Number of Topics       = 5
+Model Type             = nmf
+
+## Visualizer ##
+Top Terms Per Topic    = 10
+Sort Terms By          = seriation
+Depth of Termite Plot  = 50
+Highlight              = 0 1 2 3 4 5
+Save                   = 1
+Save Directory         = Plots
