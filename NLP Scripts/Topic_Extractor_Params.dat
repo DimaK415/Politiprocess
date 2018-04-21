@@ -3,7 +3,7 @@ Use 1 for True and 0 for False
 
 ## Query ## 
 
-Time Frame in Hours    = 24
+Time Frame in Hours    = 48
 Red, Blue or All       = Blue
 
 ## PreProcessing ##
@@ -38,7 +38,7 @@ Max Terms              = 0
 Column to Vectorize    = chunks_ents
 
 ## Decomposition Params ##
-Number of Topics       = 5
+Number of Topics       = 10
 Model Type             = nmf
 
 ## Visualizer ##

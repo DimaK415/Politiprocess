@@ -50,8 +50,10 @@ blu_sub_list = reddit_params['blu_list'].strip().split(', ')
 
 sub_limit    = int(reddit_params['limit_per_sub'].strip().split(', ')[0])
 
-mongo_host   = str(reddit_params['mongodb_host'])
-mongo_port   = int(reddit_params['mongodb_port'])
+mongo_host       = str(reddit_params['mongodb_host'])
+mongo_port       = int(reddit_params['mongodb_port'])
+mongo_db         = str(reddit_params['db'])
+mongo_collection = str(reddit_params['collection'])
 
 print('Complete')
 
