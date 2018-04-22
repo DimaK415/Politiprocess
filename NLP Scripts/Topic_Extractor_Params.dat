@@ -1,13 +1,13 @@
-# Note # 
-Use 1 for True and 0 for False
+## Subreddit Params
+Red List               = conservative, republican
+Blue List              = liberal, democrats
+Scraper Depth Limit    = 30
 
-## Query ## 
+## Query
+Time Frame in Hours    = 24
+Red Blue or All        = All
 
-Time Frame in Hours    = 48
-Red, Blue or All       = Blue
-
-## PreProcessing ##
-
+## PreProcessing
 Fix Unicode            = 1
 All Lowercase          = 0
 Remove Newline         = 1
@@ -17,15 +17,14 @@ Remove Emails          = 1
 Remove Accents         = 1
 Replace Currency       = 1
 
-## Spacy Params ##
-
+## Spacy Params
 Spacy Model            = en_core_web_md
 Min Word Length        = 2
 Use Cleaned Text       = 1
-Named Entity List      = PERSON GPE ORG NORP
+Named Entity List      = PERSON, GPE, ORG, NORP
 Split Columns          = 0
 
-## TF-IDF Params ##
+## TFIDF Params
 Use IDF                = 1 
 Normalize              = 0 
 Sublinear TF           = 1
@@ -35,16 +34,16 @@ Min DF                 = 0
 Max DF                 = 0.6
 Min IC                 = 0.0
 Max Terms              = 0
-Column to Vectorize    = chunks_ents
+Column to Vectorize    = 
 
-## Decomposition Params ##
-Number of Topics       = 10
+## Decomposition Params
+Number of Topics       = 6
 Model Type             = nmf
 
-## Visualizer ##
+## Visualizer
 Top Terms Per Topic    = 10
 Sort Terms By          = seriation
 Depth of Termite Plot  = 50
-Highlight              = 0 1 2 3 4 5
+Highlight              = 0, 1, 2, 3, 4, 5
 Save                   = 1
 Save Directory         = Plots
