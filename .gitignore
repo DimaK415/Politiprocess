@@ -1,7 +1,5 @@
-# Scraper_Params.dat credentials
-Scraper_Params.dat
-Scraper_params2.dat
-/NLP\ Scripts/Plots/
+# Secret Stuff
+*.secret
 
 led / optimized / DLL files
 __pycache__/
@@ -104,4 +102,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+
 .DS_Store
