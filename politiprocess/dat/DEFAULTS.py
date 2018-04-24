@@ -1,9 +1,9 @@
 default_dict =  {'STOPFILE': 
-                    {'Default Path'   : 'Stop_Words_List.dat',
-                    'DAT'             : 'PLACEHOLDER'},
+                    {'Default Path'                     : 'dat/stop.words',
+                    'DAT'                               : 'PLACEHOLDER'},
                 
                 'PRAWAPI': 
-                    {'Default Path'                     : '/dat/praw.secret',
+                    {'Default Path'                     : 'dat/praw.secret',
                     'DAT':
                     {'API Script Keys':
                             {'client_id'                : '',
@@ -13,7 +13,7 @@ default_dict =  {'STOPFILE':
                             'username'                  : ''}}},
         
                 'MONGO': 
-                    {'Default Path'                     : '/dat/mongo.secret',
+                    {'Default Path'                     : 'dat/mongo.secret',
                     'DAT':
                         {'Mongo DB Server Params':  
                             {'host'                     : '',
@@ -22,7 +22,7 @@ default_dict =  {'STOPFILE':
                             'collection'                : ''}}},
                  
                 'PARAMS':
-                    {'Default Path'                     : '/dat/params.dat',
+                    {'Default Path'                     : 'params/current.params',
                     'DAT':
                         {'Subreddit Params':
                              {'Red List'                : 'conservative, republican',
@@ -58,7 +58,7 @@ default_dict =  {'STOPFILE':
                              'Max Terms'                : '0',
                              'Column to Vectorize'      : ''},
                         ' Decomposition Params':
-                            {'Number of Topics'         : '6',
+                            {'Number of Topics'         : '10',
                              'Model Type'               : 'nmf'},
                         ' Visualizer':
                             {'Top Terms Per Topic'      : '10',
