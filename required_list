@@ -1,0 +1,7 @@
+
+PIP INSTALL
+praw
+recordclass
+pymongo
+praw
+newspaper3k

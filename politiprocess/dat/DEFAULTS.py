@@ -1,34 +1,52 @@
-default_dict =  {'STOPFILE': 
-                    {'Default Path'                     : 'dat/stop.words',
-                    'DAT'                               : 'PLACEHOLDER'},
-                
-                'PRAWAPI': 
+default_dict =  {'STOPFILE':
+                    {'Default Path'                     : 'dat/stop.words'},
+
+                'PRAWAPI':
                     {'Default Path'                     : 'dat/praw.secret',
                     'DAT':
-                    {'API Script Keys':
+                        {'API Script Keys':
                             {'client_id'                : '',
                             'client_secret'             : '',
                             'password'                  : '',
                             'user_agent'                : '',
-                            'username'                  : ''}}},
-        
-                'MONGO': 
+                            'username'                  : '',}}},
+
+                'MONGO':
                     {'Default Path'                     : 'dat/mongo.secret',
                     'DAT':
                         {'Mongo DB Server Params':  
                             {'host'                     : '',
                             'port'                      : '',
                             'db'                        : '',
-                            'collection'                : ''}}},
-                 
-                'PARAMS':
-                    {'Default Path'                     : 'params/current.params',
+                            'collection'                : '',}}},
+
+                'SCRAPERLOG':
+                    {'Default Path'                     : 'log/empty_scraper.log',
                     'DAT':
-                        {'Subreddit Params':
-                             {'Red List'                : 'conservative, republican',
-                             'Blue List'                : 'liberal, democrats',
-                             'Scraper Depth Limit'      : '30'},
-                        'Query':
+                        {'ScraperLog':
+                            {'Date'                     : '',
+                            'Scraper_Timer'             : '',
+                            'Article_Count'             : '',
+                            'Invalid_Links '            : '',
+                            'Failed_Links_Count'        : '',
+                            'Failed_Links'              : '',
+                            'Red_Sub_Count'             : '',
+                            'Blue_Sub_Count'            : '',}}},
+
+                'SCRAPER':
+                    {'Default Path'                     : 'dat/scraper.cfg',
+                    'DAT':
+                        {'Reddit Params':
+                            {'Red List'                 : 'conservative, republican',
+                            'Blue List'                 : 'liberal, democrats',
+                            'Scraper Depth Limit'       : '30'},
+                        'Article':
+                            {'None Article Links'       : 'www.reddit.com, i.reddit.it'}}},
+
+                'PARAMS':
+                    {'Default Path'                     : 'save/params/current.cfg',
+                    'DAT':
+                        {'Query':
                             {'Time Frame in Hours'      : '24',
                              'Red Blue or All'          : 'All'},
                         'PreProcessing':
@@ -56,7 +74,7 @@ default_dict =  {'STOPFILE':
                              'Max DF'                   : '0.6',
                              'Min IC'                   : '0.0',
                              'Max Terms'                : '0',
-                             'Column to Vectorize'      : ''},
+                             'Column to Vectorize'      : 'chunks_ents'},
                         ' Decomposition Params':
                             {'Number of Topics'         : '10',
                              'Model Type'               : 'nmf'},
