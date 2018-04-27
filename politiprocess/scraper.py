@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -139,7 +140,7 @@ def run(df = True, set_local=False):
     if set_local:
         time_now = utc_to_pacific(datetime.now())
     else:
-        time_now = datetime.now()                          # Set local Time
+        time_now = datetime.now()                                       # Set local Time
     log_date = time_now.strftime('%m%d%y_%H%M')
 
     print("Generating DataFrame")
@@ -147,7 +148,7 @@ def run(df = True, set_local=False):
     if df:
         
         posts_df = pd.DataFrame(posts_dict)                             # Make it a dataframe
-        posts_df =posts_df[["subreddit",
+        posts_df = posts_df[["subreddit",
                             "post title",
                             "title polarity",
                             "title objectivity",

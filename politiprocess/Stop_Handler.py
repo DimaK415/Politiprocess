@@ -70,17 +70,18 @@ def fixer(file, upper=True, no_punct=True, fix_in_place=False):
     else:       
         return vocab_dict
 
-def spacy_adder():
-    print(f"Adding {len(stop_words_list)} custom stop words to Spacy Model {spacy_model}.")
+# def spacy_adder():
+#     stop_words_list = loader()
+#     print(f"Adding {len(stop_words_list)} custom stop words to Spacy Model {spacy_model}.")
     
-    if not 'nlp' in globals():
-        print(f"Loading Spacy Model {spacy_model}.  This could take a while...")
-        global nlp
-        nlp = spacy.load(spacy_model)
-        print("Complete")
+#     if not 'nlp' in globals():
+#         print(f"Loading Spacy Model {spacy_model}.  This could take a while...")
+#         global nlp
+#         nlp = spacy.load(spacy_model)
+#         print("Complete")
     
-    for stopword in tqdm(stop_words_list):
-        STOP_WORDS.add(stopword)
+#     for stopword in tqdm(stop_words_list):
+#         STOP_WORDS.add(stopword)
         
-    nlp.vocab.add_flag(lambda s: s.lower() in spacy.lang.en.stop_words.STOP_WORDS, spacy.attrs.IS_STOP)
-    print(f"Complete. There are {len(STOP_WORDS)} stop words in the list.")
+#     nlp.vocab.add_flag(lambda s: s.lower() in spacy.lang.en.stop_words.STOP_WORDS, spacy.attrs.IS_STOP)
+#     print(f"Complete. There are {len(STOP_WORDS)} stop words in the list.")
