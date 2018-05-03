@@ -1,0 +1,25 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "\"/Users/o19mobile/anaconda3/bin/python3.6\" -u \"$file\""
+		}
+	],
+	"folders":
+	[
+		{
+		"path": "/Users/o19mobile/Politiprocess Dev/Politiprocess2",
+		}
+	],
+	"settings":
+	{
+		"extra_paths":
+		[
+		"/Users/o19mobile/Politiprocess Dev/Politiprocess2",
+		],
+		"python_interpreter": "/Users/o19mobile/anaconda3/bin/python3.6"
+	}
+}

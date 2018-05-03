@@ -4,84 +4,104 @@ default_dict =  {'STOPFILE':
                 'PRAWAPI':
                     {'Default Path'                     : 'dat/praw.secret',
                     'DAT':
-                        {'API Script Keys':
-                            {'client_id'                : '',
-                            'client_secret'             : '',
-                            'password'                  : '',
-                            'user_agent'                : '',
-                            'username'                  : '',}}},
+                        {'API_Script_Keys':
+                            {'client_id'                : '*',
+                            'client_secret'             : '*',
+                            'password'                  : '*',
+                            'user_agent'                : '*',
+                            'username'                  : '*',}}},
+
+                'MONGOUPDATE':
+                    {'Default Path'                     : 'dat/mongo.cfg',
+                    'DAT':
+                        {'Mongo_Update':
+                            {'Drop_ID'                  : False,
+                            'Upsert'                    : True,}}},
 
                 'MONGO':
                     {'Default Path'                     : 'dat/mongo.secret',
                     'DAT':
-                        {'Mongo DB Server Params':  
-                            {'host'                     : '',
-                            'port'                      : '',
-                            'db'                        : '',
-                            'collection'                : '',}}},
+                        {'Mongo_DB_Server_Params':  
+                            {'host'                     : '*',
+                            'port'                      : '*',
+                            'db'                        : '*',
+                            'collection'                : '*',}}},
+
+                'SCRAPER':
+                    {'Default Path'                     : 'dat/scraper.cfg',
+                    'DAT':
+                        {'Options': 
+                            {'Set_Local'                : False,
+                            'Upsert'                    : True},
+                        'Reddit_Params':
+                            {'Red_List'                 : ['conservative', 'republican'],
+                            'Blue_List'                 : ['liberal', 'democrats'],
+                            'Scraper_Depth_Limit'       : 30},
+                        'Article':
+                            {'None_Article_Links'       : ['www.reddit.com', 'i.reddit.it']},
+                        'Pre_Processing':
+                            {'Fix_Unicode'              : True,
+                             'All_Lowercase'            : False,
+                             'Remove_Newline'           : True,
+                             'Remove_Punctuation'       : False,
+                             'Remove_Contradictions'    : False,
+                             'Remove_Emails'            : True,
+                             'Remove_Accents'           : True,
+                             'Replace_Currency'         : True},
+                        'Spacy_Params':
+                            {'Spacy_Model'              : 'en',
+                             'Min_Word_Length'          : 2,
+                             'Use_Cleaned_Text'         : 1,
+                             'Named_Entity_List'        : ['PERSON', 'GPE', 'ORG', 'NORP'],
+                             'Split_Columns'            : True,
+                             'Fix_Stop'                 : True}}},
+
+                'PARAMS':
+                    {'Default Path'                     : 'save/params/default.params',
+                    'DAT':
+                        {'Query':
+                            {'Time_Frame_in_Hours'      : 24,
+                             'Red_Blue_or_All'          : 'All',
+                             'Articles_Only'            : True},
+                        'TFIDF_Params':
+                            {'Use_IDF'                  : True,
+                             'Normalize'                : False,
+                             'Sublinear_TF'             : True,
+                             'Smooth_IDF'               : False,
+                             'Vocabulary'               : None,
+                             'Min_DF'                   : False,
+                             'Max_DF'                   : 0.6,
+                             'Min_IC'                   : 0.0,
+                             'Max_Terms'                : False,
+                             'Column_to_Vectorize'      : 'chunks_ents'},
+                        'Decomposition_Params':
+                            {'Number_of_Topics'         : 10,
+                             'Model_Type'               : 'nmf'},
+                        'Visualizer':
+                            {'Top_Terms_Per_Topic'      : 10,
+                             'Sort_Terms_By'            : 'seriation',
+                             'Depth_of_Termite_Plot'    : 50,
+                             'Highlight'                : [0, 1, 2, 3, 4, 5],
+                             'Save'                     : True,
+                             'Save_Directory'           : '/Plots'}}},
 
                 'SCRAPERLOG':
-                    {'Default Path'                     : 'log/empty_scraper.log',
+                    {'Default Path'                     : 'log/scraper.log',
                     'DAT':
-                        {'ScraperLog':
+                        {'SCRAPERLOG':
                             {'Date'                     : '',
                             'Scraper_Timer'             : '',
                             'Article_Count'             : '',
-                            'Invalid_Links '            : '',
+                            'Invalid_Links'             : '',
                             'Failed_Links_Count'        : '',
                             'Failed_Links'              : '',
                             'Red_Sub_Count'             : '',
                             'Blue_Sub_Count'            : '',}}},
 
-                'SCRAPER':
-                    {'Default Path'                     : 'dat/scraper.cfg',
+                'MONGOLOG':
+                    {'Default Path'                     : 'log/mongo.log',
                     'DAT':
-                        {'Reddit Params':
-                            {'Red List'                 : 'conservative, republican',
-                            'Blue List'                 : 'liberal, democrats',
-                            'Scraper Depth Limit'       : '30'},
-                        'Article':
-                            {'None Article Links'       : 'www.reddit.com, i.reddit.it'}}},
-
-                'PARAMS':
-                    {'Default Path'                     : 'save/params/current.cfg',
-                    'DAT':
-                        {'Query':
-                            {'Time Frame in Hours'      : '24',
-                             'Red Blue or All'          : 'All'},
-                        'PreProcessing':
-                            {'Fix Unicode'              : '1',
-                             'All Lowercase'            : '0',
-                             'Remove Newline'           : '1',
-                             'Remove Punctuation'       : '0',
-                             'Remove Contradictions'    : '0',
-                             'Remove Emails'            : '1',
-                             'Remove Accents'           : '1',
-                             'Replace Currency'         : '1'},
-                        'Spacy Params':
-                            {'Spacy Model'              : 'en',
-                             'Min Word Length'          : '2',
-                             'Use Cleaned Text'         : '1',
-                             'Named Entity List'        : 'PERSON, GPE, ORG, NORP',
-                             'Split Columns'            : '0'},
-                        'TFIDF Params':
-                            {'Use IDF'                  : '1 ',
-                             'Normalize'                : '0 ',
-                             'Sublinear TF'             : '1',
-                             'Smooth IDF'               : '0',
-                             'Vocabulary'               : 'None',
-                             'Min DF'                   : '0',
-                             'Max DF'                   : '0.6',
-                             'Min IC'                   : '0.0',
-                             'Max Terms'                : '0',
-                             'Column to Vectorize'      : 'chunks_ents'},
-                        ' Decomposition Params':
-                            {'Number of Topics'         : '10',
-                             'Model Type'               : 'nmf'},
-                        ' Visualizer':
-                            {'Top Terms Per Topic'      : '10',
-                             'Sort Terms By'            : 'seriation',
-                             'Depth of Termite Plot'    : '50',
-                             'Highlight'                : '0, 1, 2, 3, 4, 5',
-                             'Save'                     : '1',
-                             'Save Directory'           : '/Plots'}}}}
+                        {'MONGOLOG':
+                            {'Date'                     : '',
+                            'Added'                     : '',
+                            'Total'                     : '',}}}}
