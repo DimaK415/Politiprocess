@@ -11,9 +11,10 @@ from Paramerator import Parameters
 from Mongo import Connect
 from Scraper import Scraper
 from Processing import Processing
+from Visualizer import Visualizer
 
 
-ui, base = loadUiType('PolitiprocessTEST.ui')
+ui, base = loadUiType('Politiprocess.ui')
 
 class Control_Panel(base, ui):
 
@@ -22,7 +23,8 @@ class Control_Panel(base, ui):
 
         self.p = Parameters()
 
-        
+        self.connection = None
+
         self.setupUi(self)
 
         self.ParamFileModel = QtWidgets.QFileSystemModel(self.ParamList)
@@ -52,6 +54,7 @@ class Control_Panel(base, ui):
         self.CurrencyCheckBox.toggled.connect(lambda: self.currency_check_box())
         self.FixUnicodeCheckBox.toggled.connect(lambda: self.unicode_check_box())
         self.LowercaseCheckBox.toggled.connect(lambda: self.lowercase_check_box())
+        self.VisualizeButton.clicked.connect(lambda: self.visualizer_start())
 
     # Functions
     def load_params(self):
@@ -63,8 +66,8 @@ class Control_Panel(base, ui):
         self.p.loader(f"save/params/{file}", 'params')
 
         self.ParamTree.setEnabled(True)
-        self.ParamLoadedLabel.setText(f"File Loaded: {file}")
-        self.ParamTree.setHeaderLabels(['Tree', 'Value'])
+        self.ParamLoadedLabel.setText(f"{file}")
+        self.ParamTree.setHeaderLabels(['Section', 'Value'])
 
         for section, value in self.p.params_dict.items():
             # print(key)
@@ -79,6 +82,7 @@ class Control_Panel(base, ui):
                     for thing in val:
                         item2 = QtWidgets.QTreeWidgetItem()
                         item2.setData(1,2, str(thing))
+                        item2.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
                         item.addChild(item2)
                     
                     root.addChild(item)
@@ -90,6 +94,7 @@ class Control_Panel(base, ui):
                 root.addChild(item)
 
     def update_value(self):
+        # if self.ParamTree.currentItem().
         value = self.ParamTree.currentItem().data(1,2)
         name = self.ParamTree.currentItem().text(0)
         parent = self.ParamTree.currentItem().parent().text(0)
@@ -99,12 +104,17 @@ class Control_Panel(base, ui):
         self.p.params_dict[parent][name] = value
 
     def mongo_update(self):
-        self.connection = Connect()
+        if not self.connection:
+            self.connection = Connect()   
+
         total = self.connection.count()
         red_count = self.connection.collection.count(query={'target': True})
         blue_count = self.connection.collection.count(query={'target': False})
         article_count = self.connection.collection.count(query={'is article': True})
         latest_article = self.connection.collection.find_one(sort=[('date', -1)])['date']
+        print(self.connection.added_count)
+        if self.connection.added_count:
+            self.AddedCount.display(self.connection.added_count)
 
         self.LatestArticleDate.setText(datetime.ctime(latest_article))
         self.ConnectButton.setStyleSheet('background-color: green')
@@ -150,14 +160,6 @@ class Control_Panel(base, ui):
 
         self.scraper_lists()
 
-    # NewlineCheckBox
-    # PunctuationCheckBox
-    # EmailsCheckBox
-    # ContradictionsCheckBox
-    # AccentsCheckBox
-    # CurrencyCheckBox
-    # FixUnicodeCheckBox
-    # LowercaseCheckBox
 
     def depth_slider(self):
 
@@ -259,9 +261,29 @@ class Control_Panel(base, ui):
         self.connection = Connect(settings=None, mongo_cfg=self.p.scraper)
         self.connection.update_from_df(scraper.scraper_df)
 
+        self.mongo_update()
+
         self.ProgressBar.setValue(100)
 
         # self.AddedCount.
+
+    def visualizer_start(self):
+        self.p.linker(self.p.params_dict, 'params')
+        
+        self.connection.settings = self.p.params
+        self.connection.query()
+
+        visualizer = Visualizer(self.connection.query_df, self.p.params)
+        visualizer.topic_modeler()
+
+        image = QtGui.QPixmap(visualizer.save)
+        image = image.scaledToWidth(545, QtCore.Qt.SmoothTransformation)
+        self.PlotView.resize(545, image.height())
+
+        self.PlotView.setPixmap(image)
+
+
+
 
 app = QtWidgets.QApplication(sys.argv)
 c = Control_Panel()

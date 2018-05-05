@@ -15,8 +15,9 @@ from Paramerator import Parameters
 class Scraper:
 
     def __init__(self, settings):
-        self.settings   = settings
-        self.scraper_df = None
+        self.settings       = settings
+        self.scraper_df     = None
+        self.added_articles = None
 
     def utc_to_pacific(self, utc_dt):
         local_tz = pytz.timezone('America/Los_Angeles')
@@ -24,11 +25,12 @@ class Scraper:
         local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
         return local_tz.normalize(local_dt)
     
-    def run(self, set_local=None, pickle=False, **kwargs):
+    def run(self, set_local=None, pickle=False, verbose=False):
         if not set_local:
             set_local   = self.settings.Options.Set_Local
-    
-        print('Starting Scraper')
+        
+        if verbose:
+            print('Starting Scraper')
         
         start_time = datetime.now()
 
@@ -68,8 +70,9 @@ class Scraper:
         failed_links    = []
         red_sub         = 0
         blue_sub        = 0
-    
-        print("Pulling Articles")
+
+        if verbose:
+            print("Pulling Articles")
 
         for sub in reddit.Red_List + reddit.Blue_List:
             submissions = (x for x in api.subreddit(sub).hot(limit=reddit.Scraper_Depth_Limit) if not x.stickied)
@@ -153,7 +156,8 @@ class Scraper:
             time_now = datetime.now()                                       # Set local Time
         log_date = time_now.strftime('%m%d%y_%H%M')
         
-        print("Generating DataFrame")
+        if verbose:
+            print("Generating DataFrame")
         
         posts_df = pd.DataFrame(posts_dict)                             # Make it a dataframe
         posts_df = posts_df[["subreddit",
@@ -177,13 +181,13 @@ class Scraper:
             posts_df.to_pickle(f'log/{log_date}.pickle')
             
         z = datetime.now() - start_time
-        scrape_time = f"{(z.seconds//60)%60}min, {z.seconds%60}sec"
+        self.scrape_time = f"{(z.seconds//60)%60}min, {z.seconds%60}sec"
         
         log = Parameters()
         log.loader('log/scraper.log', 'loaded', default=True)
         
         log.loaded.SCRAPERLOG.Date               = time_now.ctime()
-        log.loaded.SCRAPERLOG.Scraper_Timer      = scrape_time
+        log.loaded.SCRAPERLOG.Scraper_Timer      = self.scrape_time
         log.loaded.SCRAPERLOG.Article_Count      = article_count 
         log.loaded.SCRAPERLOG.Invalid_Links      = invalid_links 
         log.loaded.SCRAPERLOG.Failed_Links       = failed_links 

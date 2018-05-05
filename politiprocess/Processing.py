@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 import textacy
 import spacy
 
@@ -10,14 +9,14 @@ class Processing:
     def __init__(self, settings):
         self.settings = settings
 
-    def pre_processor(self, df, column='text', new_column_name='cleaned', **kwargs):
+    def pre_processor(self, df, column='text', new_column_name='cleaned'):
     
         preprocessing = self.settings.Pre_Processing
         
         df[column].replace(np.nan, '', inplace=True)
         
         cleaned = [] 
-        for x in tqdm(range(len(df))):
+        for x in range(len(df)):
             text = textacy.preprocess.preprocess_text(df[column][x],
                                                  fix_unicode          = preprocessing.Fix_Unicode,
                                                  lowercase            = preprocessing.All_Lowercase,
@@ -34,7 +33,8 @@ class Processing:
         df[new_column_name] = cleaned
     
     def spacy_processor(self, df, spacy_model=None, use_cleaned=None, named_entities=None,
-                                split_columns=None, min_word_length=None, fix_stop=None):
+                                split_columns=None, min_word_length=None, 
+                                fix_stop=None, verbose=False):
 
         spacy_params = self.settings.Spacy_Params
 
@@ -58,14 +58,17 @@ class Processing:
             corpus    = 'raw'
             df_column = 'text'   
         
-        print(f'''Filtering stops and words shorter than {min_word_length + 1} letters. 
+        if verbose:
+            print(f'''Filtering stops and words shorter than {min_word_length + 1} letters. 
 Chunking and identifying {named_entities} entities from {corpus} corpus.''')    
         
         if 'nlp' not in globals():
-            print(f"Loading Spacy Model {spacy_model}.  This could take a while...")
+            if verbose:
+                print(f"Loading Spacy Model {spacy_model}.  This could take a while...")
             global nlp
             nlp = spacy.load(spacy_model)
-            print("Complete")  
+            if verbose:
+                print("Complete")  
 
         if fix_stop:
             stop = Stop_Handler()
@@ -75,7 +78,7 @@ Chunking and identifying {named_entities} entities from {corpus} corpus.''')
         chunks_list = []
         ents_list   = []
         
-        for text in tqdm(df[df_column]):
+        for text in df[df_column]:
             
             doc = nlp(str(text))
             
@@ -102,11 +105,13 @@ Chunking and identifying {named_entities} entities from {corpus} corpus.''')
         if split_columns:
             df['spacy_chunks'], df['spacy_ents'] = chunks_list, ents_list
             del chunks_list, ents_list
-            print(f'''Done inserting {len(df.spacy_chunks.sum())} chunks and
+            if verbose:
+                print(f'''Done inserting {len(df.spacy_chunks.sum())} chunks and
                   {len(df.spacy_ents.sum())} entities into df.chunks and df.ents.''')
         else:
             joined_list = [a + b for a, b in zip(chunks_list, ents_list)]
             del chunks_list, ents_list
             df['spacy_chunks_ents'] = joined_list
             del joined_list
-            print(f"Done inserting {len(df.spacy_chunks_ents.sum())} chunks and entities into df.chunks_ents.)")    
+            if verbose:
+                print(f"Done inserting {len(df.spacy_chunks_ents.sum())} chunks and entities into df.chunks_ents.)")    

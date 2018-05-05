@@ -25,7 +25,7 @@ class Parameters:
         setattr(self, name, param_nt)
 
 
-    def writer(self, file, params=None, in_place=False, append=False):
+    def writer(self, file, params=None, in_place=False, append=False, verbose=False):
         '''A writer definition for writing new param files and overwriting old ones.  USE WITH CAUTION!'''
         if not params:
             params = self.loaded
@@ -59,7 +59,8 @@ class Parameters:
                 for value in params[key]:
                     
                     writer.writelines('{:30}{}{}'.format(value, '= ', params[key][value]) + '\n')
-            print(f"Completed writing {list(params.keys())} to '{file}'.")
+            if verbose:
+                print(f"Completed writing {list(params.keys())} to '{file}'.")
     
     def loader(self, file, name='loaded', as_dict=False, default=False):
         '''A loader definition for loading script dependant Parameters from file'''

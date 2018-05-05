@@ -10,7 +10,7 @@ class Stop_Handler:
         self.vocab_dict = None
         self.vocab_list = None
 
-    def load(self, file='dat/stop.words'):
+    def load(self, file='dat/stop.words', verbose=False):
         '''A loader for loading a unicode file of stop words as dictionaries.
         Keys are categories and Values are lists of terms'''
         
@@ -39,7 +39,8 @@ class Stop_Handler:
             vocab_list = []
             for terms in vocab_dict.values():
                 vocab_list.extend(terms)
-            print(f"Loading {len(vocab_list)} stop words from {list(vocab_dict.keys())}")
+            if verbose:
+                print(f"Loading {len(vocab_list)} stop words from {list(vocab_dict.keys())}")
         
         self.vocab_dict = vocab_dict
         self.vocab_list = vocab_list
@@ -75,16 +76,19 @@ class Stop_Handler:
                 for word in self.vocab_dict[key]:
                     writer.writelines(word  + '\n')
     
-    def spacy_adder(self, model='en'):
+    def spacy_adder(self, model='en', verbose=False):
 
         if not 'nlp' in globals():
-            print(f"Loading Spacy Model {model}.  This could take a while...")
+            if verbose:
+                print(f"Loading Spacy Model {model}.  This could take a while...")
             global nlp
             nlp = spacy.load(model)
-            print("Complete")
+            if verbose:
+                print("Complete")
         
         for stopword in self.vocab_list:
             STOP_WORDS.add(stopword)
             
         nlp.vocab.add_flag(lambda s: s.lower() in spacy.lang.en.stop_words.STOP_WORDS, spacy.attrs.IS_STOP)
-        print(f"Complete. There are {len(self.vocab_list)} stop words in the list.")
+        if verbose:
+            print(f"Complete. There are {len(self.vocab_list)} stop words in the list.")
