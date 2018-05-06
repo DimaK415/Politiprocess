@@ -2,6 +2,8 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from pymongo import MongoClient
+import pytz
+import os
 
 from Paramerator import Parameters
 
@@ -31,27 +33,35 @@ class Connect:
     def load_all(self):
         self.query_df = pd.DataFrame(list(self.collection.find()))
         
-    def query(self, red_or_blue=None, articles=None, n_hours=None, 
-        custom_query=None, verbose=False):
+    def query(self, red_or_blue=None, articles=None, n_hours=None, count=None,
+        custom_query=None, append_dfs= False, verbose=False):
         
+        self.query_dict = {}
+
         if not red_or_blue:
             red_or_blue = self.settings.Query.Red_Blue_or_All
         if not articles:
             articles = self.settings.Query.Articles_Only
         if not n_hours:
             n_hours = self.settings.Query.Time_Frame_in_Hours
+        if not append_dfs:
+            append_dfs = self.settings.Query.Append_DFs
+        if not count:
+            count = self.settings.Query.Count
+        else:
+            n_hours = 0
 
         if articles:
-            self.query_dict = {'is article': articles}
+            self.query_dict['is article'] = articles
             
         if articles:
             post = 'articles'
         else:
             post = 'documents'
         
-        if n_hours == 0:
+        if not n_hours:
             if verbose:
-                print(f"Pulling all {post} from {red_or_blue} targets.")
+                print(f"Pulling {count} {post} from {red_or_blue} targets.")
         else:
             if verbose:
                 print(f"Pulling {red_or_blue} articles from last {n_hours} hours.")
@@ -62,13 +72,22 @@ class Connect:
             self.query_dict['target'] = True
         elif red_or_blue == 'Blue':
             self.query_dict['target'] = False
-        else:
-            pass
+        elif red_or_blue == 'All':
+            self.query_dict['target'] = [True, False]
 
         if custom_query:
             self.query_dict = {**self.query_dict, **custom_query}
 
-        self.query_df = pd.DataFrame(list(self.collection.find(self.query_dict)))
+        if self.query_dict['target'] == [True, False]:
+            self.query_dict['target'] = True
+            self.red_df = pd.DataFrame(list(self.collection.find(self.query_dict, sort=[('_id', -1)], limit=count)))
+            self.red_df.name = 'Red'
+            self.query_dict['target'] = False
+            self.blue_df = pd.DataFrame(list(self.collection.find(self.query_dict, sort=[('_id', -1)], limit=count)))
+            self.blue_df.name = 'Blue'
+        if append_dfs:
+            self.query_df= self.red_df.append(self.blue_df)
+            self.query_df.name = 'All'
         
         if verbose:
             print(f'''Completed pulling {len(self.query_df)} {post}.
@@ -120,4 +139,10 @@ class Connect:
         log.writer('log/scraper.log', log.loaded, append=True)
 
     def count(self, query=None, red_or_blue=None):
-        return self.collection.count(query)
+        count_query = {}
+        if red_or_blue == 'Red':
+            count_query['target'] = 1
+        elif red_or_blue == 'Blue':
+            count_query['target'] = 0
+
+        return self.collection.count(count_query)

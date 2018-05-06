@@ -47,9 +47,11 @@ default_dict =  {'STOPFILE':
                              'Remove_Contradictions'    : False,
                              'Remove_Emails'            : True,
                              'Remove_Accents'           : True,
-                             'Replace_Currency'         : True},
+                             'Replace_Currency'         : True,
+                             'Remove_Extras'            : True,
+                             'Extras'                   : ['-', '·', '"', "'", '–', '..', '(', ')', '——', '—', '°', '[', ']', ':', ';', '_', '  ', '   ']},
                         'Spacy_Params':
-                            {'Spacy_Model'              : 'en',
+                            {'Spacy_Model'              : 'en_core_web_lg',
                              'Min_Word_Length'          : 2,
                              'Use_Cleaned_Text'         : 1,
                              'Named_Entity_List'        : ['PERSON', 'GPE', 'ORG', 'NORP'],
@@ -62,7 +64,9 @@ default_dict =  {'STOPFILE':
                         {'Query':
                             {'Time_Frame_in_Hours'      : 24,
                              'Red_Blue_or_All'          : 'All',
-                             'Articles_Only'            : True},
+                             'Articles_Only'            : True,
+                             'Count'                    : 0,
+                             'Append_DFs'               : False},
                         'TFIDF_Params':
                             {'TF_Type'                  : 'linear',
                              'Apply_IDF'                : True,

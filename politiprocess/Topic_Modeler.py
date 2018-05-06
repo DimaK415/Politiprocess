@@ -25,8 +25,12 @@ class Topic_Modeler:
         
         
         # Query
-        n_hours     = self.settings.Query.Time_Frame_in_Hours
-        red_or_blue = self.settings.Query.Red_Blue_or_All
+        if self.settings.Query.Count:
+            label = str(self.settings.Query.Count) + '_cnt'
+        else:
+            label = str(self.settings.Query.Time_Frame_in_Hours) + '_hrs'
+
+        red_or_blue = self.df.name
         
         # Vectorizer Params
         tf_type             = self.settings.TFIDF_Params.TF_Type
@@ -53,6 +57,7 @@ class Topic_Modeler:
             print(f"Fitting Vectorizor on {columns} column(s)")
         
         self.doc_term_matrix = self.vectorizer.fit_transform(self.df.spacy_chunks)
+        print(len(self.df.spacy_chunks))
         
         self.model = textacy.tm.TopicModel(model_type, n_topics=n_topics)
         self.model.fit(self.doc_term_matrix)
@@ -66,7 +71,7 @@ class Topic_Modeler:
         for column in columns:
             save_columns += column
     
-        json_save = f"save/json/{n_hours}hr_{red_or_blue}_{save_columns}_{time_stamp}.json"        
+        json_save = f"save/json/{label}_{red_or_blue}_{time_stamp}.json"        
         
         x = self.model.top_topic_terms(self.vectorizer.id_to_term, top_n=20, weights=True)
         
@@ -90,8 +95,13 @@ class Topic_Modeler:
 
     def visualizer(self, set_local=False):
 
-        n_hours             = self.settings.Query.Time_Frame_in_Hours
-        red_or_blue         = self.settings.Query.Red_Blue_or_All
+        if self.settings.Query.Count:
+            label = str(self.settings.Query.Count) + '_cnt'
+        else:
+            label = str(self.settings.Query.Time_Frame_in_Hours) + '_hrs'
+
+        red_or_blue = self.df.name
+
         sort_terms_by       = self.settings.Visualizer.Sort_Terms_By
         term_depth          = self.settings.Visualizer.Depth_of_Termite_Plot
         highlight           = self.settings.Visualizer.Highlight
@@ -106,7 +116,7 @@ class Topic_Modeler:
         else:
             time_stamp = str(datetime.now().strftime('%m_%d_%y_%H_%M'))
 
-        self.save = f"save/plots/{n_hours}hr_{red_or_blue}_{save_columns}_{time_stamp}.png"
+        self.save = f"save/plots/{label}_{red_or_blue}_{time_stamp}.png"
         
         self.model.termite_plot(self.doc_term_matrix, self.vectorizer.id_to_term, highlight_topics=highlight,
                        topics=-1,  n_terms=term_depth, sort_terms_by=sort_terms_by, save=self.save)

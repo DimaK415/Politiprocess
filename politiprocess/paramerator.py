@@ -44,7 +44,7 @@ class Parameters:
         else:
             write_mode = 'w+'
 
-        with open(file, mode=write_mode) as writer:
+        with open(file, mode=write_mode, encoding='UTF-8') as writer:
             
             if not isinstance(params, dict):
                 params_dict = OrderedDict()
@@ -100,7 +100,7 @@ class Parameters:
 
         else:
             params_dict = {}
-            with open(file, mode='r') as fileObj:
+            with open(file, mode='r', encoding='UTF-8') as fileObj:
             
                 for line in fileObj:
                     

@@ -18,7 +18,7 @@ class Stop_Handler:
         vocab_list = []
         current_key = ""
     
-        with open(file, mode='r') as fileObj:
+        with open(file, mode='r', encoding='UTF-8') as fileObj:
         
             for line in fileObj.read().split('\n'):
                 
@@ -69,26 +69,18 @@ class Stop_Handler:
             self.vocab_dict[key] = sorted(self.vocab_dict[key], key=str.lower)
             
     def save(self, file):
-        with open(file, mode='w+')as writer:
+        with open(file, mode='w+', encoding='UTF-8')as writer:
         
             for key in self.vocab_dict:
                 writer.writelines('\n' + key + '\n')
                 for word in self.vocab_dict[key]:
                     writer.writelines(word  + '\n')
     
-    def spacy_adder(self, model='en', verbose=False):
-
-        if not 'nlp' in globals():
-            if verbose:
-                print(f"Loading Spacy Model {model}.  This could take a while...")
-            global nlp
-            nlp = spacy.load(model)
-            if verbose:
-                print("Complete")
+    def spacy_adder(self, model, verbose=False):
         
         for stopword in self.vocab_list:
             STOP_WORDS.add(stopword)
             
-        nlp.vocab.add_flag(lambda s: s.lower() in spacy.lang.en.stop_words.STOP_WORDS, spacy.attrs.IS_STOP)
+        model.vocab.add_flag(lambda s: s.lower() in spacy.lang.en.stop_words.STOP_WORDS, spacy.attrs.IS_STOP)
         if verbose:
             print(f"Complete. There are {len(self.vocab_list)} stop words in the list.")

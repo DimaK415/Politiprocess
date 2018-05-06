@@ -272,15 +272,24 @@ class Control_Panel(base, ui):
         self.connection.settings = self.p.params
         self.connection.query()
 
-        topics = Topic_Modeler(self.connection.query_df, self.p.params)
-        topics.topic_modeler()
-        topics.visualizer()
+        if self.connection.settings.Query.Red_Blue_or_All == 'All':
+            red_topics = Topic_Modeler(self.connection.red_df, self.p.params)
+            red_topics.topic_modeler()
+            red_topics.visualizer()
 
-        image = QtGui.QPixmap(topics.save)
-        image = image.scaledToWidth(545, QtCore.Qt.SmoothTransformation)
-        self.PlotView.resize(545, image.height())
+            image1 = QtGui.QPixmap(red_topics.save)
+            image1 = image1.scaledToWidth(600, QtCore.Qt.SmoothTransformation)
+            self.RedPlotView.resize(600, image1.height())
+            self.RedPlotView.setPixmap(image1)
+            
+            blue_topics = Topic_Modeler(self.connection.blue_df, self.p.params)
+            blue_topics.topic_modeler()
+            blue_topics.visualizer()
 
-        self.PlotView.setPixmap(image)
+            image2 = QtGui.QPixmap(blue_topics.save)
+            image2 = image2.scaledToWidth(600, QtCore.Qt.SmoothTransformation)
+            self.BluePlotView.resize(600, image2.height())
+            self.BluePlotView.setPixmap(image2)
 
 
 

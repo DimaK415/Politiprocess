@@ -25,8 +25,15 @@ class Processing:
                                                  no_currency_symbols  = preprocessing.Replace_Currency,
                                                  no_emails            = preprocessing.Remove_Emails,
                                                  no_accents           = preprocessing.Remove_Accents)
+            
             if preprocessing.Remove_Newline:
                 text = text.replace('\n', ' ')
+            if preprocessing.Remove_Extras:
+                for thing in preprocessing.Extras:
+                    if thing == '-' or thing == '  ' or thing == '   ' or thing == "'":
+                        text = text.replace(thing, ' ')
+                    else:
+                        text = text.replace(thing, '')
             
             cleaned.append(text)
         
@@ -62,18 +69,14 @@ class Processing:
             print(f'''Filtering stops and words shorter than {min_word_length + 1} letters. 
 Chunking and identifying {named_entities} entities from {corpus} corpus.''')    
         
-        if 'nlp' not in globals():
-            if verbose:
-                print(f"Loading Spacy Model {spacy_model}.  This could take a while...")
-            global nlp
-            nlp = spacy.load(spacy_model)
-            if verbose:
-                print("Complete")  
+        print(f"Loading Spacy Model {spacy_model}.  This could take a while...")
+        
+        nlp = spacy.load(spacy_model)
 
         if fix_stop:
             stop = Stop_Handler()
             stop.load()
-            stop.spacy_adder(spacy_model)
+            stop.spacy_adder(nlp)
 
         chunks_list = []
         ents_list   = []
@@ -87,7 +90,7 @@ Chunking and identifying {named_entities} entities from {corpus} corpus.''')
             
             for span in doc.noun_chunks:
                 if len(span) == 1:
-                    if span[0].is_stop or len(span[0]) <= min_word_length:
+                    if span[0].is_stop or len(span[0]) <= min_word_length or span[0].text == '-':
                         continue
                     else:
                         chunks.append(span.text)

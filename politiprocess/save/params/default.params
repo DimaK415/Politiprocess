@@ -1,8 +1,10 @@
 
 ##Query
-Time_Frame_in_Hours           = 24
+Time_Frame_in_Hours           = 0
 Red_Blue_or_All               = All
 Articles_Only                 = True
+Count                         = 50
+Append_DFs                    = False
 
 ##TFIDF_Params
 TF_Type                       = linear
