@@ -11,14 +11,14 @@
 	"folders":
 	[
 		{
-		"path": "/Users/o19mobile/Politiprocess Dev/Politiprocess2",
+			"path": "/Users/o19mobile/Politiprocess Dev"
 		}
 	],
 	"settings":
 	{
 		"extra_paths":
 		[
-		"/Users/o19mobile/Politiprocess Dev/Politiprocess2",
+			"/Users/o19mobile/Politiprocess Dev/Politiprocess2"
 		],
 		"python_interpreter": "/Users/o19mobile/anaconda3/bin/python3.6"
 	}

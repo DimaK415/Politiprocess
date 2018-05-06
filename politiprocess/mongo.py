@@ -21,6 +21,12 @@ class Connect:
         self.query_df   = None
         self.query_dict = {}
         self.added_count= None
+
+    def utc_to_pacific(self, utc_dt):
+        local_tz = pytz.timezone('America/Los_Angeles')
+        os.environ['TZ'] = 'America/Los_Angeles'
+        local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+        return local_tz.normalize(local_dt)
         
     def load_all(self):
         self.query_df = pd.DataFrame(list(self.collection.find()))
@@ -68,7 +74,7 @@ class Connect:
             print(f'''Completed pulling {len(self.query_df)} {post}.
         Latest article is from {self.collection.find_one(sort=[('date', -1)])['date']} UTC''')
 
-    def update_from_df(self, df=None, drop_id=None, upsert=None, verbose=False):
+    def update_from_df(self, df=None, drop_id=None, upsert=None, set_local=None, verbose=False):
 
         try:
             if not df:
@@ -79,6 +85,8 @@ class Connect:
             drop_id = self.mongo_cfg.Options.Set_Local
         if not upsert:
             upsert = self.mongo_cfg.Options.Upsert
+        if not set_local:
+            set_local = self.mongo_cfg.Options.Set_Local
 
         if drop_id:
             df = df.drop(['_id'], axis=1)
@@ -88,7 +96,7 @@ class Connect:
         old_count = self.collection.count()
         
         for post in data:
-            self.collection.update_one({'post title': post['post title']},{'$set': post}, upsert=upsert)
+            self.collection.update_one({'link': post['link'], 'subreddit': post['subreddit']},{'$set': post}, upsert=upsert)
             
         new_count = self.collection.count()
         
@@ -97,10 +105,15 @@ class Connect:
         if verbose:
             print(f'Added {self.added_count} Entries to Database')
 
+        if set_local:
+            time_stamp = datetime.ctime(self.utc_to_pacific(datetime.now()))
+        else:
+            time_stamp = datetime.ctime(datetime.now())
+
         log = Parameters()
         log.loader('log/mongo.log', default=True)
 
-        log.loaded.MONGOLOG.Date    = datetime.ctime(datetime.now())
+        log.loaded.MONGOLOG.Date    = time_stamp
         log.loaded.MONGOLOG.Added   = self.added_count
         log.loaded.MONGOLOG.Total   = new_count
 

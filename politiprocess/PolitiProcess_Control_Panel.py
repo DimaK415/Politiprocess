@@ -11,7 +11,7 @@ from Paramerator import Parameters
 from Mongo import Connect
 from Scraper import Scraper
 from Processing import Processing
-from Visualizer import Visualizer
+from Topic_Modeler import Topic_Modeler
 
 
 ui, base = loadUiType('Politiprocess.ui')
@@ -112,7 +112,6 @@ class Control_Panel(base, ui):
         blue_count = self.connection.collection.count(query={'target': False})
         article_count = self.connection.collection.count(query={'is article': True})
         latest_article = self.connection.collection.find_one(sort=[('date', -1)])['date']
-        print(self.connection.added_count)
         if self.connection.added_count:
             self.AddedCount.display(self.connection.added_count)
 
@@ -273,10 +272,11 @@ class Control_Panel(base, ui):
         self.connection.settings = self.p.params
         self.connection.query()
 
-        visualizer = Visualizer(self.connection.query_df, self.p.params)
-        visualizer.topic_modeler()
+        topics = Topic_Modeler(self.connection.query_df, self.p.params)
+        topics.topic_modeler()
+        topics.visualizer()
 
-        image = QtGui.QPixmap(visualizer.save)
+        image = QtGui.QPixmap(topics.save)
         image = image.scaledToWidth(545, QtCore.Qt.SmoothTransformation)
         self.PlotView.resize(545, image.height())
 
