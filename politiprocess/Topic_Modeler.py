@@ -1,4 +1,5 @@
 import os
+from collections import OrderedDict
 from datetime import datetime
 import pytz
 import json
@@ -57,7 +58,6 @@ class Topic_Modeler:
             print(f"Fitting Vectorizor on {columns} column(s)")
         
         self.doc_term_matrix = self.vectorizer.fit_transform(self.df.spacy_chunks)
-        print(len(self.df.spacy_chunks))
         
         self.model = textacy.tm.TopicModel(model_type, n_topics=n_topics)
         self.model.fit(self.doc_term_matrix)
@@ -73,21 +73,25 @@ class Topic_Modeler:
     
         json_save = f"save/json/{label}_{red_or_blue}_{time_stamp}.json"        
         
-        x = self.model.top_topic_terms(self.vectorizer.id_to_term, top_n=20, weights=True)
-        
+        x = self.model.top_topic_terms(self.vectorizer.id_to_term, top_n=10, weights=True)
+
         topic_list = []
         for y in x:
             topic_list.append(y[1])
         
         topic_list.sort(key=lambda dic: dic[0][1], reverse=True)
-
-        topic_dict = {}
-        for x  in topic_list:
-            temp_list = []
-            for y in x:
-                temp_list.append(y)
+        
+        topic_dict = OrderedDict()
+        for i, group in enumerate(topic_list):
             
-            topic_dict[x[0][0]] = temp_list
+            temp_list = []
+            for term in group:
+                temp_dict = OrderedDict()
+                temp_dict['term']  = term[0]
+                temp_dict['score'] = term[1]
+                temp_list.append(temp_dict)
+    
+            topic_dict[f'topic {i+1}'] = temp_list
         
         with open(json_save, 'w') as fp:
             json.dump(topic_dict, fp, indent=1)
