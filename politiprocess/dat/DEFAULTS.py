@@ -31,12 +31,12 @@ default_dict =  {'STOPFILE':
                     {'Default Path'                     : 'dat/scraper.cfg',
                     'DAT':
                         {'Options': 
-                            {'Set_Local'                : False,
+                            {'Set_Local'                : True,
                             'Upsert'                    : True},
                         'Reddit_Params':
                             {'Red_List'                 : ['conservative', 'republican'],
                             'Blue_List'                 : ['liberal', 'democrats'],
-                            'Scraper_Depth_Limit'       : 30},
+                            'Scraper_Depth_Limit'       : 10},
                         'Article':
                             {'None_Article_Links'       : ['www.reddit.com', 'i.reddit.it']},
                         'Pre_Processing':
@@ -62,10 +62,10 @@ default_dict =  {'STOPFILE':
                     {'Default Path'                     : 'save/params/default.params',
                     'DAT':
                         {'Query':
-                            {'Time_Frame_in_Hours'      : 24,
+                            {'Time_Frame_in_Hours'      : 0,
                              'Red_Blue_or_All'          : 'All',
                              'Articles_Only'            : True,
-                             'Count'                    : 0,
+                             'Count'                    : 50,
                              'Append_DFs'               : False},
                         'TFIDF_Params':
                             {'TF_Type'                  : 'linear',

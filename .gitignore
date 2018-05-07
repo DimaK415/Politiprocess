@@ -8,9 +8,6 @@
 # Backups
 *.old
 
-# Stop Words
-.words
-
 led / optimized / DLL files
 __pycache__/
 *.py[cod]
