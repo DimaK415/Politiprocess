@@ -1,4 +1,4 @@
 FROM python:3
-ADD . /politiprocess
-WORKDIR /politiprocess
+ADD . /Politiprocess
+WORKDIR /Politiprocess
 RUN pip install -r requirements.txt

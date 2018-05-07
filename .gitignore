@@ -8,6 +8,10 @@
 # Backups
 *.old
 
+# JSON and PNG
+*.png
+*.json
+
 led / optimized / DLL files
 __pycache__/
 *.py[cod]
