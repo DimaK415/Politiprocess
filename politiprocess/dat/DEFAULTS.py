@@ -109,4 +109,11 @@ default_dict =  {'STOPFILE':
                         {'MONGOLOG':
                             {'Date'                     : '',
                             'Added'                     : '',
+                            'Total'                     : '',}}},
+                'JSONLOG':
+                    {'Default Path'                     : 'log/JSON.log',
+                    'DAT':
+                        {'JSONLOG':
+                            {'Date'                     : '',
+                            'Added'                     : '',
                             'Total'                     : '',}}}}

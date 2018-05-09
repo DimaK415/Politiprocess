@@ -1,4 +1,4 @@
-__all__ = 	        ['Mongo.py',
+__all__ =  ['Mongo.py',
 			'Paramerator.py',
 			'Processing.py',
 			'Scraper.py',

@@ -116,5 +116,3 @@ ENV/
 
 .DS_Store
 *.sublime-workspace
-*.json
-*.json
