@@ -17,9 +17,11 @@ class Connect:
         self.mongo.loader('dat/mongo.secret', 'server')
         self._mongo     = self.mongo.server.Mongo_DB_Server_Params
         
-        self.client     = MongoClient(host=self._mongo.host, port=self._mongo.port)
+        self.client     = MongoClient(host=self._mongo.host, port=self._mongo.port,
+                                        username=self._mongo.user, password=self._mongo.password)
         self.db         = getattr(self.client, self._mongo.db)
         self.collection = getattr(self.db, self._mongo.collection)
+
         self.query_df   = None
         self.query_dict = {}
         self.added_count= None
