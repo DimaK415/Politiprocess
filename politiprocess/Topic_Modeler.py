@@ -91,7 +91,7 @@ class Topic_Modeler:
                 temp_dict['score'] = term[1]
                 temp_list.append(temp_dict)
     
-            topic_dict[f'topic_{i+1}'] = temp_list
+            topic_dict[f'topic_{i}'] = temp_list
         
         with open(json_save, 'w') as fp:
             json.dump(topic_dict, fp, indent=1)
