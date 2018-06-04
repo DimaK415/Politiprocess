@@ -30,7 +30,7 @@ class Processing:
                 text = text.replace('\n', ' ')
             if preprocessing.Remove_Extras:
                 for thing in preprocessing.Extras:
-                    if thing == '-' or thing == '  ' or thing == '   ' or thing == "'":
+                    if thing in  ['  ', '   ', '    ']:
                         text = text.replace(thing, ' ')
                     else:
                         text = text.replace(thing, '')

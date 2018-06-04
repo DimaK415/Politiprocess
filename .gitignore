@@ -114,5 +114,6 @@ ENV/
 # mypy
 .mypy_cache/
 
-.DS_Store
+*.DS_Store
+*._.DS_Store
 *.sublime-workspace
